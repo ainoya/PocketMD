@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1718153876664,
+      "tag": "0000_material_liz_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1718154961406,
+      "tag": "0001_rapid_shard",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1718158560186,
+      "tag": "0002_premium_sersi",
+      "breakpoints": true
+    }
+  ]
+}

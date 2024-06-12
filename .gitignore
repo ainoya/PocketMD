@@ -1,0 +1,15 @@
+# TypeScript Coverage Reports
+coverage/
+
+# TypeScript Build Output
+dist/
+
+.env
+.envrc
+
+node_modules
+
+*.db
+*.sqlite3
+
+secrets/
