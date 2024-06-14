@@ -60,7 +60,7 @@ async function saveArticleToMarkdown(article: {
   const content = `---
 title: ${article.title}
 url: ${article.url}
-description: ${article.excerpt}
+description: "${article.excerpt}"
 ---
 
 ## Summary
