@@ -70,6 +70,45 @@ async function distillArticle(url: string): Promise<string | undefined> {
   }
 }
 
+async function fetchImageAsBase64(imageUrl: string): Promise<string> {
+  const response = await fetch(imageUrl);
+  const fileType = response.headers.get("content-type");
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const base64 = buffer.toString("base64");
+
+  return `data:${fileType};base64,${base64}`;
+}
+
+function timeout(ms: number): Promise<never> {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject(new Error("timeout"));
+    }, ms);
+  });
+}
+
+async function replaceImageWithBase64Data(markdown: string): Promise<string> {
+  const regex = /!\[.*?\]\((.*?)\)/g;
+
+  // set timeout to avoid redos attack
+  const matches = await Promise.race([markdown.matchAll(regex), timeout(1000)]);
+
+  for (const match of matches) {
+    const imageUrl = match[1];
+    try {
+      const base64 = await fetchImageAsBase64(imageUrl);
+      console.info(`Replaced image ${imageUrl} with base64 data`);
+      markdown = markdown.replace(imageUrl, base64);
+    } catch (error) {
+      console.error(`Error fetching image ${imageUrl}: ${error}`);
+      continue;
+    }
+  }
+
+  return markdown;
+}
+
 // fill in the body of articles
 async function main() {
   // get articles created in the last 7days
@@ -88,10 +127,12 @@ async function main() {
     if (!markdown) {
       continue;
     }
+    const markdownProcessed = await replaceImageWithBase64Data(markdown);
+
     await db
       .update(articles)
       .set({
-        markdown,
+        markdown: markdownProcessed,
       })
       .where(eq(articles.id, article.id))
       .execute();

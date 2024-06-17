@@ -1,6 +1,11 @@
 // fill summary with Vertex AI
 
-import { VertexAI } from "@google-cloud/vertexai";
+import {
+  GenerativeModel,
+  HarmBlockThreshold,
+  HarmCategory,
+  VertexAI,
+} from "@google-cloud/vertexai";
 import { articlesTable as articles } from "./schema";
 import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { db } from "./db";
@@ -55,9 +60,16 @@ async function summarizeArticle(article: {
 
   const text = generatePrompt(article);
 
-  // console.log(`prompt: ${text}`);
+  // convert enum HarmCategory to array
+  // NOTE: pelease refer to https://cloud.google.com/vertex-ai/docs/gapic/reference/rpc/google.cloud.aiplatform.v1#google.cloud.aiplatform.v1.HarmCategory
+  // you may need to adjust the HarmCategory to match the enum in the API
+  const allHarmCategories = Object.values(HarmCategory);
 
   const summary = await generativeAiModel.generateContent({
+    safetySettings: allHarmCategories.map((category) => ({
+      category,
+      threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+    })),
     contents: [
       {
         role: "user",
@@ -79,6 +91,7 @@ async function summarizeArticle(article: {
     return;
   }
 
+  console.info(`respone: ${JSON.stringify(candidates)}`);
   const fullTextResponse = candidates[0].content.parts[0].text;
 
   console.log(fullTextResponse);

@@ -57,6 +57,8 @@ async function saveArticleToMarkdown(article: {
     return;
   }
 
+  const markdownBody = article.markdown;
+
   const content = `---
 title: "${article.title}"
 url: ${article.url}
@@ -69,7 +71,7 @@ ${article.ai_summary ?? "no summary"}
 
 ## Article
 
-${article.markdown ?? "no content"}
+${markdownBody ?? "no content"}
 `;
 
   fs.writeFileSync(filePath, content);
