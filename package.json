@@ -19,6 +19,7 @@
 		"@google-cloud/vertexai": "^1.2.0",
 		"@libsql/client": "^0.6.2",
 		"axios": "^1.7.2",
+		"axios-retry": "^4.4.0",
 		"better-sqlite3": "^11.0.0",
 		"date-fns": "^3.6.0",
 		"dotenv": "^16.4.5",

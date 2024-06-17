@@ -3,6 +3,7 @@ import { db } from "./db";
 import { subDays } from "date-fns";
 import { and, eq, gte, isNotNull, isNull } from "drizzle-orm";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const DISTILLER_API_ENDPOINT = process.env.DISTILLER_API_ENDPOINT;
 const DISTILLER_API_KEY = process.env.DISTILLER_API_KEY;
@@ -24,6 +25,23 @@ async function distillArticle(url: string): Promise<string | undefined> {
     url,
     markdown: true,
   };
+
+  axiosRetry(axios, {
+    retries: 5,
+    retryDelay: (retryCount) => {
+      // exponential backoff
+      const delay = Math.pow(2, retryCount) * 2000;
+
+      console.info(
+        `Retrying distillation for article ${url}, retryCount: ${retryCount}, delay: ${delay}`
+      );
+
+      return delay;
+    },
+    retryCondition: (error) => {
+      return error.response?.status === 429;
+    },
+  });
 
   try {
     const response = await axios.post<DistillResponse>(
