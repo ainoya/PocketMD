@@ -121,12 +121,14 @@ function generatePrompt(article: {
   ai_summary: string | null;
   time_added: Date | null;
 }): string {
+  // remove image links
+  const sanitized = article.markdown?.replace(/!\[.*?\]\((.*?)\)/g, "");
   return `
   Title: ${article.title}
   URL: ${article.url}
   Description: ${article.excerpt}
   <article_body>
-  ${article.markdown?.substring(0, 4000) ?? "empty result"}
+  ${sanitized?.substring(0, 8000) ?? "empty result"}
   </article_body>
 
   ---
