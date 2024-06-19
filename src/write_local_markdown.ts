@@ -119,10 +119,10 @@ async function saveArticleToMarkdown(article: {
   const fileName = `${article.title.replace(/[/\\?%*:|"<>]/g, "_")}.md`;
   const filePath = path.join(CLIP_DIR, fileName);
 
-  // if (fs.existsSync(filePath)) {
-  //   console.log(`File ${filePath} exists, skipping saving`);
-  //   return;
-  // }
+  if (fs.existsSync(filePath)) {
+    console.log(`File ${filePath} exists, skipping saving`);
+    return;
+  }
 
   const markdownBody = article.markdown
     ? formatMarkdownBody(article.markdown)
