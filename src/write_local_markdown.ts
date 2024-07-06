@@ -137,10 +137,6 @@ description: "${sanitizeFrontmatterString(article.excerpt ?? "")}"
 ## Summary
 
 ${article.ai_summary ?? "no summary"}
-
-## Article
-
-${markdownBody ?? "no content"}
 `;
 
   fs.writeFileSync(filePath, content);
