@@ -27,10 +27,10 @@ async function distillArticle(url: string): Promise<string | undefined> {
   };
 
   axiosRetry(axios, {
-    retries: 5,
+    retries: 7,
     retryDelay: (retryCount) => {
       // exponential backoff
-      const delay = Math.pow(2, retryCount) * 2000;
+      const delay = Math.pow(2, retryCount) * 3000;
 
       console.info(
         `Retrying distillation for article ${url}, retryCount: ${retryCount}, delay: ${delay}`
