@@ -128,7 +128,7 @@ function generatePrompt(article: {
   URL: ${article.url}
   Description: ${article.excerpt}
   <article_body>
-  ${sanitized?.substring(0, 8000) ?? "empty result"}
+  ${sanitized?.substring(0, 20_000) ?? "empty result"}
   </article_body>
 
   ---
