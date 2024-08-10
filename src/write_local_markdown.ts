@@ -116,7 +116,11 @@ async function saveArticleToMarkdown(article: {
     return;
   }
   // escape slashes, and forbidden characters in filenames
-  const fileName = `${article.title.replace(/[/\\?%*:|"<>]/g, "_")}.md`;
+  // limit to 200 characters to avoid ENAMETOOLONG error
+  const fileName = `${article.title
+    .replace(/[/\\?%*:|"<>]/g, "_")
+    .substring(0, 200)
+    .trim()}.md`;
   const filePath = path.join(CLIP_DIR, fileName);
 
   if (fs.existsSync(filePath)) {

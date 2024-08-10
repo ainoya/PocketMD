@@ -1,34 +1,16 @@
 // fill summary with Vertex AI
 
-import {
-  GenerativeModel,
-  HarmBlockThreshold,
-  HarmCategory,
-  VertexAI,
-} from "@google-cloud/vertexai";
+import { HarmBlockThreshold, HarmCategory } from "@google-cloud/vertexai";
 import { articlesTable as articles } from "./schema";
 import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { db } from "./db";
-
-if (!process.env.GCP_PROJECT_ID) {
-  throw new Error("GCP_PROJECT_ID is not set.");
-}
-
-console.log(`keyFile: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+import { vertexAIClient } from "./lib/vertex_client";
 
 const CUSTOM_INSTRUCTIONS = process.env.CUSTOM_INSTRUCTIONS || "";
 
-const vertexAI = new VertexAI({
-  project: process.env.GCP_PROJECT_ID,
-  location: process.env.GCP_PROJECT_LOCATION,
-  googleAuthOptions: {
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  },
+const generativeAiModel = vertexAIClient({
+  modelName: "gemini-1.5-flash-001",
 });
-
-const model = "gemini-1.5-flash-001";
-
-const generativeAiModel = vertexAI.getGenerativeModel({ model });
 
 async function main() {
   const latestArticle = await db
