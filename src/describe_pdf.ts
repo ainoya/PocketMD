@@ -7,12 +7,7 @@ import { db } from "./db";
 import { articlesTable as articles } from "./schema";
 import { Article } from "./models/article";
 import { vertexAIClient } from "./lib/vertex_client";
-import {
-  Content,
-  FileDataPart,
-  GenerativeContentBlob,
-  InlineDataPart,
-} from "@google-cloud/vertexai";
+import { Content, InlineDataPart } from "@google-cloud/vertexai";
 
 // 1. get pdf url from sqlite
 const fetchPdfUrls = async (): Promise<Article[]> => {
