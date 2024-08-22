@@ -21,7 +21,7 @@
 		"@google-cloud/vertexai": "^1.2.0",
 		"@google/generative-ai": "^0.16.0",
 		"@libsql/client": "^0.6.2",
-		"axios": "^1.7.2",
+		"axios": "^1.7.4",
 		"axios-retry": "^4.4.0",
 		"better-sqlite3": "^11.0.0",
 		"date-fns": "^3.6.0",
