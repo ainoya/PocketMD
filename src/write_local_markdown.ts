@@ -132,6 +132,12 @@ async function saveArticleToMarkdown(article: {
     ? formatMarkdownBody(article.markdown)
     : undefined;
 
+  const articleBody = `
+  ## Body
+  
+  ${markdownBody ?? "empty result"}
+  `;
+
   const content = `---
 title: "${sanitizeFrontmatterString(article.title)}"
 url: ${article.url}
@@ -141,6 +147,8 @@ description: "${sanitizeFrontmatterString(article.excerpt ?? "")}"
 ## Summary
 
 ${article.ai_summary ?? "no summary"}
+
+${article.url.endsWith(".pdf") ? articleBody : ""}
 `;
 
   fs.writeFileSync(filePath, content);

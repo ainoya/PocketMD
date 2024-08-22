@@ -1,7 +1,7 @@
 import { articlesTable as articles } from "./schema";
 import { db } from "./db";
 import { subDays } from "date-fns";
-import { and, eq, gte, isNotNull, isNull } from "drizzle-orm";
+import { and, eq, gte, isNotNull, isNull, sql } from "drizzle-orm";
 import axios from "axios";
 import axiosRetry from "axios-retry";
 
@@ -117,7 +117,13 @@ async function main() {
   const latestArticles = await db
     .select()
     .from(articles)
-    .where(and(gte(articles.time_added, since), isNull(articles.markdown)))
+    .where(
+      and(
+        gte(articles.time_added, since),
+        isNull(articles.markdown),
+        sql`${articles.url} NOT LIKE '%.pdf'`
+      )
+    )
     .execute();
 
   for (const article of latestArticles) {
