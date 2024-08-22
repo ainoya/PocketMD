@@ -9,6 +9,7 @@ import { Article } from "./models/article";
 import { vertexAIClient } from "./lib/vertex_client";
 import { Content, InlineDataPart } from "@google-cloud/vertexai";
 import { isNotNull } from "drizzle-orm";
+import { isNull } from "drizzle-orm";
 
 // 1. get pdf url from sqlite
 const fetchPdfUrls = async (): Promise<Article[]> => {
@@ -21,7 +22,7 @@ const fetchPdfUrls = async (): Promise<Article[]> => {
           sql`${articles.url} LIKE '%.pdf'`,
           sql`${articles.url} LIKE 'https://arxiv.org/pdf/%'`
         ),
-        isNotNull(articles.markdown)
+        isNull(articles.markdown)
       )
     )
     .orderBy(desc(articles.time_added))
@@ -57,7 +58,7 @@ const extractTextFromPdf = async (
 
   const customInstructions = process.env.CUSTOM_INSTRUCTIONS_DESCRIBE_PDF || "";
 
-  const textPrompt = `Extract text from PDF
+  const textPrompt = `Extract ALL text from PDF.
     ${customInstructions}
   `;
 
