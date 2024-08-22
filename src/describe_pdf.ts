@@ -2,19 +2,20 @@
 // 2. download pdf
 // 3. extract text from pdf with vertex ai
 
-import { sql, desc, eq } from "drizzle-orm";
+import { sql, desc, eq, and } from "drizzle-orm";
 import { db } from "./db";
 import { articlesTable as articles } from "./schema";
 import { Article } from "./models/article";
 import { vertexAIClient } from "./lib/vertex_client";
 import { Content, InlineDataPart } from "@google-cloud/vertexai";
+import { isNotNull } from "drizzle-orm";
 
 // 1. get pdf url from sqlite
 const fetchPdfUrls = async (): Promise<Article[]> => {
   const latestPdfs = await db
     .select()
     .from(articles)
-    .where(sql`${articles.url} LIKE '%.pdf'`)
+    .where(and(sql`${articles.url} LIKE '%.pdf'`, isNotNull(articles.markdown)))
     .orderBy(desc(articles.time_added))
     .limit(10)
     .execute();
