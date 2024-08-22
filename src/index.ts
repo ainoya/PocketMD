@@ -25,18 +25,11 @@ async function fetchPocketArticles() {
 
 // Function to save articles to SQLite database using Drizzle ORM
 async function saveArticlesToSQLite(newArticles: PocketItemList) {
+  console.log("Saving articles to SQLite database...");
   // Insert articles into the database
   for (const articleId in newArticles) {
     const article = newArticles[articleId];
     try {
-      console.log(
-        `Saving url ${article.resolved_url},article: ${
-          article.resolved_title
-        }, timestamp: ${format(
-          new Date(parseInt(article.time_added) * 1000),
-          "yyyy-MM-dd HH:mm:ss"
-        )}`
-      );
       // upsert into the articles table
       await db
         .insert(articles)

@@ -8,8 +8,10 @@
 		"fetch": "tsx src/index.ts",
 		"distill": "tsx src/fill_body.ts",
 		"summary": "tsx src/fill_summary.ts",
+		"describe-pdf": "tsx src/describe_pdf.ts",
+		"fill-title": "tsx src/fill_title.ts",
 		"write": "tsx src/write_local_markdown.ts",
-		"fetch-write": "npm run fetch && npm run distill && npm run summary && npm run write",
+		"fetch-write": "npm run fetch && npm run distill && npm run describe-pdf && npm run fill-title && npm run summary && npm run write",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "tsx src/migrate.ts"
 	},
