@@ -2,7 +2,7 @@
 // 2. download pdf
 // 3. extract text from pdf with vertex ai
 
-import { sql, desc, eq, and } from "drizzle-orm";
+import { sql, desc, eq, and, or } from "drizzle-orm";
 import { db } from "./db";
 import { articlesTable as articles } from "./schema";
 import { Article } from "./models/article";
@@ -15,7 +15,15 @@ const fetchPdfUrls = async (): Promise<Article[]> => {
   const latestPdfs = await db
     .select()
     .from(articles)
-    .where(and(sql`${articles.url} LIKE '%.pdf'`, isNotNull(articles.markdown)))
+    .where(
+      and(
+        or(
+          sql`${articles.url} LIKE '%.pdf'`,
+          sql`${articles.url} LIKE 'https://arxiv.org/pdf/%'`
+        ),
+        isNotNull(articles.markdown)
+      )
+    )
     .orderBy(desc(articles.time_added))
     .limit(10)
     .execute();
