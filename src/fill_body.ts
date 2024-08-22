@@ -121,7 +121,8 @@ async function main() {
       and(
         gte(articles.time_added, since),
         isNull(articles.markdown),
-        sql`${articles.url} NOT LIKE '%.pdf'`
+        sql`${articles.url} NOT LIKE '%.pdf'`,
+        sql`${articles.url} NOT LIKE 'https://arxiv.org/pdf/%'`
       )
     )
     .execute();
