@@ -61,8 +61,6 @@ const extractTextFromPdf = async (
 
   const continueWord = process.env.CONTINUE_WORD || "Please continue";
 
-  // stopReasonがnullで無くなるまで繰り返す
-
   const maxLoopCount = 10;
   let loopCount = 0;
   while (true) {
