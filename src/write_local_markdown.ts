@@ -106,6 +106,7 @@ async function saveArticleToMarkdown(article: {
   excerpt: string | null;
   markdown: string | null;
   ai_summary: string | null;
+  filetype: string | null;
 }): Promise<void> {
   if (!CLIP_DIR) {
     throw new Error("CLIP_DIR is not set");
@@ -148,7 +149,7 @@ description: "${sanitizeFrontmatterString(article.excerpt ?? "")}"
 
 ${article.ai_summary ?? "no summary"}
 
-${article.url.endsWith(".pdf") ? articleBody : ""}
+${article.filetype === "application/pdf" ? articleBody : ""}
 `;
 
   fs.writeFileSync(filePath, content);
