@@ -9,4 +9,5 @@ export const articlesTable = sqliteTable("articles", {
   markdown: text("markdown"),
   ai_summary: text("ai_summary"),
   time_added: integer("time_added", { mode: "timestamp" }),
+  filetype: text("filetype"),
 });

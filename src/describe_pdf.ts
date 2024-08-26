@@ -17,13 +17,7 @@ const fetchPdfUrls = async (): Promise<Article[]> => {
     .select()
     .from(articles)
     .where(
-      and(
-        or(
-          sql`${articles.url} LIKE '%.pdf'`,
-          sql`${articles.url} LIKE 'https://arxiv.org/pdf/%'`
-        ),
-        isNull(articles.markdown)
-      )
+      and(eq(articles.filetype, "application/pdf"), isNull(articles.markdown))
     )
     .orderBy(desc(articles.time_added))
     .limit(10)

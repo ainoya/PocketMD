@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-dotenv run npm run fetch-write
+flock /tmp/pocket-to-local.lock dotenv run npm run fetch-write

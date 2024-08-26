@@ -23,12 +23,28 @@ async function fetchPocketArticles() {
   return response.data.list;
 }
 
+// Resolve file type from the URL with using headers
+async function resolveFileType(url: string): Promise<string | null> {
+  try {
+    const response = await axios.head(url);
+    const contentType = response.headers["content-type"].split(";")[0];
+
+    return contentType;
+  } catch (error) {
+    console.error(`Error resolving file type for ${url}: ${error}`);
+    return null;
+  }
+}
+
 // Function to save articles to SQLite database using Drizzle ORM
 async function saveArticlesToSQLite(newArticles: PocketItemList) {
   console.log("Saving articles to SQLite database...");
   // Insert articles into the database
   for (const articleId in newArticles) {
     const article = newArticles[articleId];
+    const fileType = await resolveFileType(
+      article.resolved_url ?? article.given_url
+    );
     try {
       // upsert into the articles table
       await db
@@ -39,6 +55,7 @@ async function saveArticlesToSQLite(newArticles: PocketItemList) {
           url: article.resolved_url ?? article.given_url,
           excerpt: article.excerpt,
           raw_data: article,
+          filetype: fileType,
           // convert time_added (epoch seconds) to date
           time_added: new Date(parseInt(article.time_added) * 1000),
         })
@@ -49,6 +66,7 @@ async function saveArticlesToSQLite(newArticles: PocketItemList) {
     } catch (error) {
       console.error(
         `Error saving article: ${article} ${article.resolved_url}, ${error}`
+        
       );
       console.error(error);
     }
