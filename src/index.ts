@@ -47,7 +47,9 @@ async function saveArticlesToSQLite(newArticles: PocketItemList) {
         })
         .execute();
     } catch (error) {
-      console.error(`Error saving article: ${article.resolved_url}, ${error}`);
+      console.error(
+        `Error saving article: ${article} ${article.resolved_url}, ${error}`
+      );
       console.error(error);
     }
   }
