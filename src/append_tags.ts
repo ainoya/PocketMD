@@ -32,7 +32,7 @@ import {
 import { FunctionDeclarationSchemaType } from "@google-cloud/vertexai";
 
 const vertex = vertexAIClient({
-  modelName: "gemini-1.5-pro-001",
+  modelName: "gemini-1.5-pro-002",
 });
 const ARTICLE_DIR = process.env.ARTICLE_DIR;
 

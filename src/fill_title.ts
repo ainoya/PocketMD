@@ -7,7 +7,7 @@ import { db } from "./db";
 import { vertexAIClient } from "./lib/vertex_client";
 
 const generativeAiModel = vertexAIClient({
-  modelName: "gemini-1.5-flash-001",
+  modelName: "gemini-1.5-flash-002",
 });
 
 async function main() {

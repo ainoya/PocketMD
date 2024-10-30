@@ -40,7 +40,7 @@ const extractTextFromPdf = async (
   dataBase64Encoded: string
 ): Promise<string> => {
   const client = vertexAIClient({
-    modelName: "gemini-1.5-pro-001",
+    modelName: "gemini-1.5-pro-002",
   });
 
   const pdfPart: InlineDataPart = {

@@ -9,7 +9,7 @@ import { vertexAIClient } from "./lib/vertex_client";
 const CUSTOM_INSTRUCTIONS = process.env.CUSTOM_INSTRUCTIONS || "";
 
 const generativeAiModel = vertexAIClient({
-  modelName: "gemini-1.5-flash-001",
+  modelName: "gemini-1.5-flash-002",
 });
 
 async function main() {
