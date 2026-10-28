@@ -27,7 +27,7 @@ async function fetchPocketArticles() {
 async function resolveFileType(url: string): Promise<string | null> {
   try {
     const response = await axios.head(url);
-    const contentType = response.headers["content-type"].split(";")[0];
+    const contentType = (response.headers["content-type"] as string).split(";")[0];
 
     return contentType;
   } catch (error) {
